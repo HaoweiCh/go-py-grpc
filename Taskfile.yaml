@@ -1,0 +1,19 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  gen:
+    vars:
+      py: /usr/local/bin/python3.9
+    cmds:
+      - "{{.py}} -m grpc_tools.protoc -I./py --python_out=./py --pyi_out=./py --grpc_python_out=./py ./py/py.proto"
+      - protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./py/py.proto
